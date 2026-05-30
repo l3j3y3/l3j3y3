@@ -1,10 +1,11 @@
  name: Generate Snake
-
   on:
+    push:
+      paths:
+        - .github/workflows/snake.yml
     workflow_dispatch:
     schedule:
       - cron: "0 0 * * *"
-
   jobs:
     generate:
       runs-on: ubuntu-latest
