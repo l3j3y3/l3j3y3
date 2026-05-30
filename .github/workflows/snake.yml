@@ -1,23 +1,33 @@
- name: Generate Snake
-  on:
-    push:
-      paths:
-        - .github/workflows/snake.yml
-    workflow_dispatch:
-    schedule:
-      - cron: "0 0 * * *"
-  jobs:
-    generate:
-      runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@v4
-        - uses: Platane/snk@v3
-          with:
-            github_user_name: l3j3y3
-            outputs: dist/snake.svg
-        - uses: crazy-max/ghaction-github-pages@v3
-          with:
-            target_branch: output
-            build_dir: dist
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+name: Generate Snake
+
+on:
+  push:
+    paths:
+      - .github/workflows/snake.yml
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * *"
+
+permissions:
+  contents: write   # 关键：允许推分支
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Generate Snake SVG
+        uses: Platane/snk@v3
+        with:
+          github_user_name: 13j3y3   # 改对用户名
+          outputs: dist/snake.svg
+
+      - name: Push to output branch
+        uses: crazy-max/ghaction-github-pages@v3
+        with:
+          target-branch: output   # 横杠，不是下划线
+          build-dir: dist          # 横杠，不是下划线
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
